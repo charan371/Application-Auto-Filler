@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+jinja2
+python-multipart
+passlib[bcrypt]
+python-dotenv
+requests
+python-jose[cryptography]
+passlib[bcrypt]
+flask
+flask-cors

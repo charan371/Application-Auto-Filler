@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-size: 100% 100%;
+  background-position: 0px 0px, 0px 0px, 0px 0px;
+  background-image:
+    linear-gradient(90deg, #7F1150FF 0%, #FF000000 99%),
+    linear-gradient(90deg, #70A4FBFF 60%, #FF000000 99%),
+    linear-gradient(90deg, #08325AFF 100%, #FF0000FF 100%);
+    }
+    .container { max-width: 540px; background: #fff; margin: 40px auto; border-radius: 8px; box-shadow: 0 0 10px #bbb; padding: 32px 24px; }
+    h2 { text-align: center; margin-bottom: 24px; }
+    h3 { color: #0078d7; margin-bottom: 10px; }
+    label { display: block; margin-top: 16px; }
+    input, select, textarea {
+      width: 100%; padding: 8px; margin-top: 6px; border-radius: 4px; border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      width: 48%; background: #0078d7; color: #fff; border: none; border-radius: 4px;
+      padding: 10px; font-size: 1.1em; margin-top: 24px; cursor: pointer; margin-right: 2%;
+    }
+    button:last-child { margin-right: 0; }
+    button:hover { background: #005fa3; }
+    .form-navigation { display: flex; justify-content: space-between; }
+    .message { margin-top: 16px; text-align: center; }
+    .readonly { background: #f3f3f3; color: #888; }
+    .form-page { display: none; }
+    .form-page.active { display: block; }
+    @media (max-width: 600px) {
+      .container { max-width: 99vw; padding: 16px 4vw; }
+      button { font-size: 1em; }
+    }
+    .logout-btn {
+      display: block;
+      margin: 0 0 24px auto;
+      background: #fa3232;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .logout-btn:hover { background: #c20000;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <h2>College Application</h2>
+    <form id="multiStepForm" autocomplete="off">
+      <!-- PAGE 1: Personal Info -->
+      <div class="form-page active" id="page1">
+        <h3>Personal Information</h3>
+        <label>First Name *</label>
+        <input type="text" name="first_name" required>
+        <label>Middle Name</label>
+        <input type="text" name="middle_name">
+        <label>Last Name *</label>
+        <input type="text" name="last_name" required>
+        <label>Date of Birth *</label>
+        <input type="date" name="date_of_birth" required>
+        <label>Gender *</label>
+        <select name="gender" required>
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+        <label>Mobile Number *</label>
+        <input type="text" name="mobile_number" required>
+        <label>Other Phone</label>
+        <input type="text" name="other_phone">
+        <label>Email Address *</label>
+        <input type="email" name="email_address" required>
+      </div>
+
+      <!-- PAGE 2: Address & Program Details -->
+      <div class="form-page" id="page2">
+        <h3>Address</h3>
+        <label>House Number</label>
+        <input type="text" name="house_number">
+        <label>Street Name</label>
+        <input type="text" name="street_name">
+        <label>City</label>
+        <input type="text" name="city">
+        <label>State/Province</label>
+        <input type="text" name="state_province">
+        <label>Country</label>
+        <input type="text" name="country">
+        <label>Postcode</label>
+        <input type="text" name="postcode">
+
+        <h3>Program Details</h3>
+        <label>Course Interested *</label>
+        <input type="text" name="course_interested" class="readonly" readonly required>
+        <label>Student Type</label>
+        <input type="text" name="student_type">
+        <label>Student Sub-Type</label>
+        <input type="text" name="student_sub_type">
+        <label>Campus *</label>
+        <select name="campus" required>
+          <option value="">Select Campus</option>
+          <option>Melbourne(CBD)</option>
+          <option>Melbourne(North Melbourne)</option>
+          <option>Online</option>
+          <option>Perth(St. George Terrace)</option>
+          <option>Sydney(Wentworth St)</option>
+        </select>
+        <label>Mode of Delivery *</label>
+        <select name="mode_of_delivery" required>
+          <option value="">Select Mode</option>
+          <option>Face-to-face</option>
+          <option>Hybrid</option>
+        </select>
+        <label>Fee Help Opted *</label>
+        <select name="fee_help_opted" required>
+          <option value="">Select Option</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <!-- PAGE 3: Emergency, Visa & Qualification -->
+      <div class="form-page" id="page3">
+        <h3>Emergency Contact</h3>
+        <label>Name</label>
+        <input type="text" name="emergency_name">
+        <label>Relationship</label>
+        <input type="text" name="emergency_relationship">
+        <label>Phone</label>
+        <input type="text" name="emergency_phone">
+        <label>Email</label>
+        <input type="email" name="emergency_email">
+
+        <h3>Visa and Other Details</h3>
+        <label>Visa Type</label>
+        <input type="text" name="visa_type">
+        <label>Passport Number</label>
+        <input type="text" name="passport_number">
+        <label>Expiry Date</label>
+        <input type="date" name="visa_expiry_date">
+        <label>Country of Issue</label>
+        <input type="text" name="country_of_issue">
+
+        <h3>Qualification</h3>
+        <label>Qualification Name</label>
+        <input type="text" name="qualification_name">
+        <label>Institution</label>
+        <input type="text" name="qualification_institution">
+        <label>Year of Completion</label>
+        <input type="text" name="qualification_year_of_completion">
+        <label>Grade or Result</label>
+        <input type="text" name="qualification_grade_or_result">
+      </div>
+
+      <div class="form-navigation">
+        <button type="button" id="prevBtn" style="display:none;">Previous</button>
+        <button type="button" id="nextBtn">Save & Next</button>
+        <button type="submit" id="submitBtn" style="display:none;">Submit</button>
+      </div>
+    </form>
+    <div class="message" id="msg"></div>
+  </div>
+
+  <script>
+    // Multi-step logic
+    let currentPage = 1;
+    const totalPages = 3;
+    const form = document.getElementById('multiStepForm');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const msg = document.getElementById('msg');
+
+    function showPage(n) {
+      for (let i = 1; i <= totalPages; i++) {
+        document.getElementById('page'+i).classList.remove('active');
+      }
+      document.getElementById('page'+n).classList.add('active');
+      prevBtn.style.display = n === 1 ? "none" : "inline-block";
+      nextBtn.style.display = n === totalPages ? "none" : "inline-block";
+      submitBtn.style.display = n === totalPages ? "inline-block" : "none";
+    }
+
+    prevBtn.onclick = function() {
+      if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    };
+
+    nextBtn.onclick = async function() {
+      // Collect and save current page data
+      const page = document.getElementById('page'+currentPage);
+      const fields = page.querySelectorAll('input, select, textarea');
+      let data = {};
+      fields.forEach(el => { if (el.name) data[el.name] = el.value; });
+      // Add username from localStorage/session
+      data.username = localStorage.getItem('username') || prompt("Enter your username:");
+      const token = localStorage.getItem('access_token');
+      const res = await fetch("/save-progress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify(data)
+      }); 
+      if (res.ok) {
+        msg.style.color = "green";
+        msg.textContent = "Progress saved!";
+        setTimeout(()=>{msg.textContent="";},1500);
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "Failed to save progress.";
+      }
+      if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    };
+
+    form.onsubmit = async function(e) {
+      e.preventDefault();
+      // Gather all form data for final submit
+      const formData = new FormData(form);
+      let data = {};
+      for (const [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+      data.username = localStorage.getItem('username') || prompt("Enter your username:");
+      const token = localStorage.getItem('access_token');
+      const res = await fetch("/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        msg.style.color = "green";
+        msg.textContent = "Application submitted!";
+        form.reset();
+        currentPage = 1;
+        showPage(1);
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "Submission failed.";
+      }
+    };
+
+    // On load: Fetch user data from Node MCP server and autofill
+    window.addEventListener('DOMContentLoaded', async () => {
+      showPage(currentPage);
+      const username = localStorage.getItem('username');
+      if (username) {
+        try {
+          // Change this to your Node MCP server's address if needed!
+          const res = await fetch(`http://localhost:4000/get-user-data/${username}`);
+          if (res.ok) {
+            const data = await res.json();
+            Object.entries(data).forEach(([key, value]) => {
+              const el = document.querySelector(`[name="${key}"]`);
+              if (el && value != null) el.value = value;
+            });
+          } else {
+            msg.textContent = "No data found for user. Please select a course first.";
+            msg.style.color = "red";
+          }
+        } catch (e) {
+          msg.textContent = "Error fetching user data. Is the agent running?";
+          msg.style.color = "red";
+        }
+      }
+    });
+  
+    function logout() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('access_token');
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

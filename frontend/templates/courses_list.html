@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Courses</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-size: 100% 100%;
+  background-position: 0px 0px, 0px 0px, 0px 0px;
+  background-image:
+    linear-gradient(90deg, #7F1150FF 0%, #FF000000 99%),
+    linear-gradient(90deg, #70A4FBFF 60%, #FF000000 99%),
+    linear-gradient(90deg, #08325AFF 100%, #FF0000FF 100%);
+    }
+    .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 0 10px #bbb; padding: 32px 24px;}
+    h2 { text-align: center; color: #0078d7;}
+    .course-card { border-bottom: 1px solid #eee; padding: 20px 0; display: flex; justify-content: space-between; align-items: center;}
+    .course-name { font-size: 1.1em;}
+    .apply-btn { background: #0078d7; color: #fff; border: none; border-radius: 4px; padding: 8px 24px; cursor: pointer;}
+    .apply-btn:hover { background: #005fa3;}
+    .logout-btn {
+      display: block;
+      margin: 0 0 24px auto;
+      background: #fa3232;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .logout-btn:hover { background: #c20000;}
+    .message { text-align: center; margin: 10px 0; color: #0078d7;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <h2>Available Courses</h2>
+    <div id="coursesList"></div>
+    <div class="message" id="msg"></div>
+  </div>
+  <script>
+    const courses = [
+      "Bachelor of Nursing",
+      "Master of Nursing",
+      "Bachelor of Social Work",
+      "GCAN - Graduate Certificate in Advanced Nursing (Specialization)",
+      "EAP - English for Academic Purposes",
+      "General English",
+      "Master of Nursing (Online)",
+      "Bridge to RN Program"
+    ];
+    const container = document.getElementById('coursesList');
+    const msg = document.getElementById('msg');
+    courses.forEach(course => {
+      const card = document.createElement('div');
+      card.className = 'course-card';
+      card.innerHTML = `<span class="course-name">${course}</span>
+        <button class="apply-btn" onclick="apply('${encodeURIComponent(course)}')">Apply</button>`;
+      container.appendChild(card);
+    });
+
+    async function apply(course) {
+      const username = localStorage.getItem('username');
+      if (!username) {
+        msg.textContent = "Please log in again.";
+        setTimeout(() => window.location = 'login.html', 1000);
+        return;
+      }
+      msg.textContent = "Processing...";
+      // POST to test agent (Python, assumed at http://localhost:5001/send-course)
+      try {
+        const res = await fetch('http://localhost:5001/send-course', {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username,
+            course_interested: decodeURIComponent(course)
+          })
+        });
+        if (res.ok) {
+          msg.textContent = "Course selected. Redirecting to application form...";
+          setTimeout(() => window.location = 'form.html', 1000);
+        } else {
+          msg.textContent = "Failed to send course. Please try again.";
+        }
+      } catch (e) {
+        msg.textContent = "Could not connect to test agent. Is it running?";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('access_token');
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
