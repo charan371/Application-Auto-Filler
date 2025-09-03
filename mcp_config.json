@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "playwright-agent": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["agent.js"]
-    }
-  }
-}
